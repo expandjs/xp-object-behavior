@@ -46,8 +46,8 @@ A behavior used to improve Polymer's object mutation API on the context element.
 
             // Enforcing
             parts.forEach(function (part, i) {
-                var object = self[current += (current ? '.' : '') + part] && typeof self[current] === 'object';
-                self.set(current, i + 1 === parts.length ? value : (object ? self[current] : {}));
+                var force = !self[current += (current ? '.' : '') + part] || typeof self[current] !== 'object';
+                if (i + 1 === parts.length) { self.set(current, value); } else if (force) { self.set(current, {}); }
             });
 
             return value;
